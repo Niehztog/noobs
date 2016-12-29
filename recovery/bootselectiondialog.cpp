@@ -23,6 +23,7 @@
 #include <QScreen>
 #include <QWSServer>
 #include <QDebug>
+#include <QKeyEvent>
 
 BootSelectionDialog::BootSelectionDialog(const QString &defaultPartition, QWidget *parent) :
     QDialog(parent),
@@ -238,6 +239,16 @@ bool BootSelectionDialog::eventFilter(QObject *obj, QEvent *event)
     if (event->type() == QEvent::KeyPress || event->type() == QEvent::MouseButtonPress)
     {
         stopCountdown();
+    }
+
+    if (event->type() == QEvent::KeyPress)
+    {
+        QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
+        if(keyEvent->key() == Qt::Key_Space )
+        {
+            accept();
+            return true; // mark the event as handled
+        }
     }
 
     return QDialog::eventFilter(obj, event);
